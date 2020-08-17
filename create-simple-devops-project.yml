@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks: 
+  - name: create docker image using war file
+    command: docker build -t simpledevops-image:latest .
+#    args:
+ #     chdir: /opt/docker	
+  - name: create tag to the generated image
+    command: docker tag simpledevops-image:latest ssuresh446/simpledevops-image:latest
+  - name: push image to docker hub
+    command: docker push ssuresh446/simpledevops-image:latest
+  - name: remove the docker images from ansible server
+    command: docker rmi ssuresh446/simpledevops-image:latest simpledevops-image:latest
+    ignore_errors: yes 

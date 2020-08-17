@@ -1,0 +1,20 @@
+---
+  - hosts: all
+    become: true
+    tasks:
+    - name: stop if we have old docker container
+      command: docker stop simple-devops-container
+      ignore_errors: yes    
+#ignores if the container already in stopped state
+
+    - name: remove stopped docker container
+      command: docker rm simple-devops-container
+      ignore_errors: yes
+
+    - name: remove current docker image
+      command: docker rmi ssuresh446/simpledevops-image
+      ignore_errors: yes
+    - name: pull docker image from docker container
+      command: docker pull ssuresh446/simpledevops-image
+    - name: create container from the pulled image
+      command: docker run -d --name simple-devops-container -p 8080:8080 ssuresh446/simpledevops-image
